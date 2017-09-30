@@ -37,6 +37,8 @@ pfUI_translation = {}
 pfUI.cache = {}
 pfUI.module = {}
 pfUI.modules = {}
+pfUI.skin = {}
+pfUI.skins = {}
 pfUI.environment = {}
 pfUI.movables = {}
 pfUI.version = {}
@@ -91,12 +93,23 @@ pfUI:SetScript("OnEvent", function()
         pfUI.module[m]()
       end
     end
+
+    -- load skins
+    for i,s in pairs(this.skins) do
+      setfenv(pfUI.skin[s], pfUI:GetEnvironment())
+      pfUI.skin[s]()
+    end
   end
 end)
 
 function pfUI:RegisterModule(n, f)
   pfUI.module[n] = f
   table.insert(pfUI.modules, n)
+end
+
+function pfUI:RegisterSkin(n, f)
+  pfUI.skin[n] = f
+  table.insert(pfUI.skins, n)
 end
 
 pfUI.backdrop = {
